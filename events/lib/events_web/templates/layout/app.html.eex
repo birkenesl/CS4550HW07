@@ -16,6 +16,9 @@
         <div class="col my-2">
           <p><%= link "Home", to: "/" %></p>
         </div>
+	<div class="col my-2">
+	  <p><%= link "Posts", to: "/posts" %></p>
+	</div>
         <div class="col my-2">
           <%= if function_exported?(Routes, :live_dashboard_path, 2) do %>
             <p><%= link "LiveDashboard", to: Routes.live_dashboard_path(@conn, :home) %></p>
