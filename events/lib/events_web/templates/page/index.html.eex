@@ -4,16 +4,25 @@
   </div>
 </div>
 
+
+<%= if @conn.assigns[:current_user] do %>
+  <span><%= link "New Post", to: Routes.post_path(@conn, :new) %></span>
+<% end %>
+
+
 <div class="row">
   <%= for post <- @posts do %>
-    <div class="col-sm-4 card">
+    <div class="col-sm-4 card text-center">
       <div class="card-body">
         <h5 class="card-title"> <%= post.name %></h5>
 
-        <p class="card-text"> <%= post.date %></p>
+        <p class="card-text"><u>Scheduled for <%= post.date %></u></p>
         <p class="card-text"> <%= post.body %></p>
         <%= link("view", to: Routes.post_path(@conn, :show, post)) %>
 
+      </div>
+      <div class="card-footer text-muted">
+        Posted by <%= post.user.name %>
       </div>
     </div>
   <% end %>

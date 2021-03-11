@@ -6,7 +6,9 @@ defmodule Events.Posts.Post do
     field :name, :string
     field :date, :string
     field :body, :string
-    #TODO date with datepicker js widget
+    belongs_to :user, Events.Users.User
+    # field user_id which just contains an
+    # id for a User
 
     timestamps()
   end
@@ -14,7 +16,7 @@ defmodule Events.Posts.Post do
   @doc false
   def changeset(post, attrs) do
     post
-    |> cast(attrs, [:body, :name, :date])
-    |> validate_required([:body, :name, :date])
+    |> cast(attrs, [:body, :name, :date, :user_id])
+    |> validate_required([:body, :name, :date, :user_id])
   end
 end

@@ -16,7 +16,7 @@
   <div class="form-group"> <!-- need to add widget instead.. -->
 
   <p> Date: </p>
-  <%= date_input f, :date, id: "picker" %>
+  <%= text_input f, :date, id: "my-date-picker" %>
   <%= error_tag f, :date %>
 
   </div>
