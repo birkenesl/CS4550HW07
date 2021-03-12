@@ -13,6 +13,7 @@
 <div class="row">
   <%= for post <- @posts do %>
     <div class="col-sm-4 card text-center">
+
       <div class="card-body">
         <h5 class="card-title"> <%= post.name %></h5>
 
@@ -21,8 +22,10 @@
         <%= link("view", to: Routes.post_path(@conn, :show, post)) %>
 
       </div>
-      <div class="card-footer text-muted">
+      <div class="card-footer">
         Posted by <%= post.user.name %>
+        <% src = Routes.user_path(@conn, :photo, post.user) %>
+        <img src="<%= src %>" alt="" width="50" height="50">
       </div>
     </div>
   <% end %>

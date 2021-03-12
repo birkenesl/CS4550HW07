@@ -13,11 +13,30 @@
 alias Events.Repo
 alias Events.Users.User
 alias Events.Posts.Post
+alias Events.Photos
 
-john = Repo.insert!(%User{name: "john", email: "john@test.com"})
-bob = Repo.insert!(%User{name: "bob", email: "bob@test.com"})
+# a lot of this code attributed to Nat Tuck Lecture 12/13 code
+defmodule Inject do
+  def photo(name) do
+    photos = Application.app_dir(:events, "priv/photos")
+    path = Path.join(photos, name)
+    {:ok, hash} = Photos.save_photo(name, path)
+    hash
+  end
+end
 
-Repo.insert!(%Post{name: "John Testing", date: "12/2/2", body: "John says Hi",
- user_id: john.id})
-Repo.insert!(%Post{name: "Bob Testing", date: "12/2/2", body: "Bob says Yo",
-user_id: bob.id})
+stock = Inject.photo("stock.jpeg")
+
+john = Repo.insert!(%User{name: "john", photo_hash: stock, email: "john@test.com"})
+bob = Repo.insert!(%User{name: "bob", photo_hash: stock, email: "bob@test.com"})
+
+Repo.insert!(%Post{
+  name: "John Testing",
+  date: "12/2/2",
+  body: "John says Hi",
+  user_id: john.id})
+Repo.insert!(%Post{
+  name: "Bob Testing",
+  date: "12/2/2",
+  body: "Bob says Yo",
+  user_id: bob.id})

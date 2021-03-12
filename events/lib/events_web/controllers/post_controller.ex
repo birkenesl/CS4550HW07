@@ -4,6 +4,11 @@ defmodule EventsWeb.PostController do
   alias Events.Posts
   alias Events.Posts.Post
 
+
+  alias EventsWeb.Plugs
+  plug Plugs.RequireUser #when action
+    #not in [:new, :edit, :create, :]
+    #note that at this point, we basically want to require user for everything
   def index(conn, _params) do
     posts = Posts.list_posts()
     render(conn, "index.html", posts: posts)
@@ -15,6 +20,7 @@ defmodule EventsWeb.PostController do
   end
 
   def create(conn, %{"post" => post_params}) do
+
     post_params = post_params
     |> Map.put("user_id", conn.assigns[:current_user].id)
 
