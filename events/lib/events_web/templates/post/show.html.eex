@@ -36,8 +36,21 @@
 
 
     <div class="col">
-      <h3> Respond: </h3>
+
+      <!-- this kept creating errors for some reason. Couldn't figure out why
       <%= if have_current_user?(@conn) do %>
+      <h3> Respond: </h3>
+      <%= if find_response(@conn, @post) do %>
+      <%= render(
+      EventsWeb.ResponseView,
+      "form.html",
+      changeset: @new_response,
+      action: Routes.response_path(@conn, :update, find_response(@conn, @post))
+      ) %>
+      <% end %>
+      <% end %> -->
+
+      <%= if have_current_user?(@conn) && !find_response(@conn, @post) do %>
       <%= render(
       EventsWeb.ResponseView,
       "form.html",
@@ -45,6 +58,8 @@
       action: Routes.response_path(@conn, :create)
       ) %>
       <% end %>
+
+
 
 
       <h3> Current Tally of Responses: </h3>
@@ -89,7 +104,6 @@
           <% src = Routes.user_path(@conn, :photo, comm.user) %>
           <img src="<%= src %>" alt="" width="50" height="50">
           <p class="card-text"> <%= comm.body %> </p>
-          <span><%= link "Show", to: Routes.comment_path(@conn, :show, comm) %></span>
           <%= if current_user_is_owner?(@conn, comm.user_id) || current_user_is_owner?(@conn, @post.user_id) do %>
           <span><%= link "Delete", to: Routes.comment_path(@conn, :delete, comm), method: :delete, data: [confirm: "Are you sure?"] %></span>
           <% end %>
