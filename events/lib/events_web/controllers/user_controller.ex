@@ -26,11 +26,10 @@ defmodule EventsWeb.UserController do
     # this above referenced code should partly be in photos.ex
     up = user_params["photo"]
     {:ok, hash} =
-      case up do
-        true ->
-          Photos.save_photo(up.filename, up.path)
-        nil ->
-          Photos.save_photo_default()
+      if nil do
+	Photos.save_photo_default()
+      else
+	Photos.save_photo(up.filename, up.path)
       end
 
 

@@ -31,7 +31,7 @@ export SECRET_KEY_BASE
 
 
 export DATABASE_URL=ecto://events:eventstneve@localhost/events_prod
-#mix ecto.create
+mix ecto.reset
 mix ecto.migrate
 
 npm install --prefix ./assets
