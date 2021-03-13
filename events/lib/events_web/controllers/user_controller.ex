@@ -7,7 +7,7 @@ defmodule EventsWeb.UserController do
 
   alias EventsWeb.Plugs
   plug Plugs.RequireUser when action
-    not in [:index, :show, :new, :create]
+    not in [:index, :show, :new, :create, :photo]
 
   def index(conn, _params) do
     users = Users.list_users()
@@ -20,8 +20,22 @@ defmodule EventsWeb.UserController do
   end
 
   def create(conn, %{"user" => user_params}) do
+    # instead of dealing with errors as a result of a user not uploading a
+    # picture for their profile picture, I decided to check if they uploaded
+    # anything and if not, I assigned them a default photo
+    # this above referenced code should partly be in photos.ex
     up = user_params["photo"]
-    {:ok, hash} = Photos.save_photo(up.filename, up.path)
+    {:ok, hash} =
+      case up do
+        true ->
+          Photos.save_photo(up.filename, up.path)
+        nil ->
+          Photos.save_photo_default()
+      end
+
+
+
+
     user_params = user_params
     |> Map.put("photo_hash", hash)
 

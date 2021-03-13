@@ -5,7 +5,7 @@
 </div>
 
 
-<%= if @conn.assigns[:current_user] do %>
+<%= if have_current_user?(@conn) do %>
   <span><%= link "New Post", to: Routes.post_path(@conn, :new) %></span>
 <% end %>
 
@@ -17,7 +17,7 @@
       <div class="card-body">
         <h5 class="card-title"> <%= post.name %></h5>
 
-        <p class="card-text"><u>Scheduled for <%= post.date %></u></p>
+        <p class="card-text"><u><%= post.date %></u></p>
         <p class="card-text"> <%= post.body %></p>
         <%= link("view", to: Routes.post_path(@conn, :show, post)) %>
 

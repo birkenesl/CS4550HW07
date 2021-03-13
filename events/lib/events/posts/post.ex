@@ -9,6 +9,7 @@ defmodule Events.Posts.Post do
     belongs_to :user, Events.Users.User
     # field user_id which just contains an
     # id for a User
+    has_many :comments, Events.Comments.Comment
 
     timestamps()
   end

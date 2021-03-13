@@ -7,6 +7,15 @@ defmodule Events.Photos do
     save_photo(name, data, hash, meta)
   end
 
+  def save_photo_default() do
+    photos = Application.app_dir(:events, "priv/photos")
+    path = Path.join(photos, "stock.jpeg")
+    {:ok, hash} = save_photo("stock.jpeg", path)
+    {:ok, hash}
+  end
+
+
+
   def save_photo(name, data, hash, nil) do
     File.mkdir_p!(base_path(hash))
     meta = %{

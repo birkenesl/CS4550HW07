@@ -1,25 +1,41 @@
 <h1>Listing Posts</h1>
 
+
+<%= if have_current_user?(@conn) do %>
+  <span><%= link "New Post", to: Routes.post_path(@conn, :new) %></span>
+<% end %>
+
 <table class="table table-striped">
   <thead>
     <tr>
-      <th></th>
+      <th>Event Title</th>
+      <th>Posted By</th>
+      <th>Scheduled For</th>
+      <th>Description</th>
+      <th>Manage</th>
 
       <th></th>
     </tr>
   </thead>
   <tbody>
+
+
+
 <%= for post <- @posts do %>
     <tr>
       <td><%= post.name %></td>
-      <td><%= post.user.name %></td>
+      <td>
+        <%= post.user.name %>
+        <img src="<%= Routes.user_path(@conn, :photo, post.user) %>" alt="" width="25" height="25">
+      </td>
+
       <td><%= post.date %></td>
       <td><%= post.body %></td>
 
 
       <td>
         <span><%= link "Show", to: Routes.post_path(@conn, :show, post) %></span>
-        <%= if @conn.assigns[:current_user].id == post.user.id do %>
+        <%= if current_user_is_owner?(@conn, post.user_id) do %>
           <span><%= link "Edit", to: Routes.post_path(@conn, :edit, post) %></span>
           <span><%= link "Delete", to: Routes.post_path(@conn, :delete, post), method: :delete, data: [confirm: "Are you sure?"] %></span>
         <% end %>
@@ -29,6 +45,6 @@
   </tbody>
 </table>
 
-<%= if @conn.assigns[:current_user] do %>
+<%= if have_current_user?(@conn) do %>
   <span><%= link "New Post", to: Routes.post_path(@conn, :new) %></span>
 <% end %>

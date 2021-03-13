@@ -32,11 +32,11 @@ bob = Repo.insert!(%User{name: "bob", photo_hash: stock, email: "bob@test.com"})
 
 Repo.insert!(%Post{
   name: "John Testing",
-  date: "12/2/2",
+  date: "2021-03-15 12:00",
   body: "John says Hi",
   user_id: john.id})
 Repo.insert!(%Post{
   name: "Bob Testing",
-  date: "12/2/2",
+  date: "2021-03-15 3:00",
   body: "Bob says Yo",
   user_id: bob.id})
