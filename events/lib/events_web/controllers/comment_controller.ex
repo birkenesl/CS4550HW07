@@ -48,7 +48,7 @@ defmodule EventsWeb.CommentController do
       {:ok, comment} ->
         conn
         |> put_flash(:info, "Comment updated successfully.")
-        |> redirect(to: Routes.comment_path(conn, :show, comment))
+        |> redirect(to: Routes.post_path(conn, :show, comment.post_id))
 
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "edit.html", comment: comment, changeset: changeset)
@@ -61,6 +61,6 @@ defmodule EventsWeb.CommentController do
 
     conn
     |> put_flash(:info, "Comment deleted successfully.")
-    |> redirect(to: Routes.comment_path(conn, :index))
+    |> redirect(to: Routes.post_path(conn, :show, comment.post_id))
   end
 end

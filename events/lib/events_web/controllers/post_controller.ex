@@ -68,12 +68,21 @@ defmodule EventsWeb.PostController do
   def show(conn, %{"id" => id}) do
     post = conn.assigns[:post]
     |> Posts.load_comments()
+    |> Posts.load_responses()
+
     comm = %Events.Comments.Comment{
       post_id: post.id,
       user_id: current_user_id(conn)
     }
+
+    resp = %Events.Responses.Response{
+      post_id: post.id,
+      user_id: current_user_id(conn)
+    }
+
     new_comment = Events.Comments.change_comment(comm)
-    render(conn, "show.html", post: post, new_comment: new_comment)
+    new_response = Events.Responses.change_response(resp)
+    render(conn, "show.html", post: post, new_comment: new_comment, new_response: new_response)
   end
 
   def edit(conn, %{"id" => id}) do

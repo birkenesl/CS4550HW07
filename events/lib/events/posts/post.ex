@@ -10,6 +10,7 @@ defmodule Events.Posts.Post do
     # field user_id which just contains an
     # id for a User
     has_many :comments, Events.Comments.Comment
+    has_many :responses, Events.Responses.Response
 
     timestamps()
   end

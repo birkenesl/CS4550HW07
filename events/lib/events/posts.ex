@@ -47,6 +47,12 @@ defmodule Events.Posts do
   def load_comments(%Post{} = post) do
     Repo.preload(post, [comments: :user])
   end
+
+  def load_responses(%Post{} = post) do
+    Repo.preload(post, [responses: :user])
+  end
+
+
   @doc """
   Creates a post.
 

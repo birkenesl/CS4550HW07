@@ -2,47 +2,110 @@
 
 <p>
   <%= if current_user_is_owner?(@conn, @post.user_id) do %>
-    <span><%= link "Edit", to: Routes.post_path(@conn, :edit, @post) %></span>
+  <span><%= link "Edit", to: Routes.post_path(@conn, :edit, @post) %></span>
   <% end %>
   <span><%= link "Back", to: Routes.post_path(@conn, :index) %></span>
 </p>
+<div class="container">
+  <h1>Show Post</h1>
+  <div class="row">
 
-<h1>Show Post</h1>
-<br>
-<div>
+    <div class="col">
 
-    <h2> <%= @post.name %></h2>
 
-    <div>
-      Posted by <%= @post.user.name %>
-      <% src = Routes.user_path(@conn, :photo, @post.user) %>
-      <img src="<%= src %>" alt="" width="50" height="50">
+
+      <div class="card">
+        <div class="card-body">
+          <h2> <%= @post.name %></h2>
+
+          <div>
+            Posted by <%= @post.user.name %>
+            <% src = Routes.user_path(@conn, :photo, @post.user) %>
+            <img src="<%= src %>" alt="" width="50" height="50">
+          </div>
+
+          <p><u>Scheduled for <%= @post.date %></u></p>
+          <br>
+          <p> <%= @post.body %></p>
+
+        </div>
+      </div>
+
+
     </div>
 
-    <p><u>Scheduled for <%= @post.date %></u></p>
-    <br>
-    <p> <%= @post.body %></p>
+
+    <div class="col">
+      <h3> Respond: </h3>
+      <%= if have_current_user?(@conn) do %>
+      <%= render(
+      EventsWeb.ResponseView,
+      "form.html",
+      changeset: @new_response,
+      action: Routes.response_path(@conn, :create)
+      ) %>
+      <% end %>
 
 
-  <!-- Some of this code attributed to Nat Tuck Lecture 13 Code-->
-  <h3> Add Comment </h3>
-  <%= if have_current_user?(@conn) do %>
-    <%= render(
+      <h3> Current Tally of Responses: </h3>
+      <div class="card">
+        <div class="card-body">
+          <%= for resp <- @post.responses do %>
+          <p><%= resp.user.name %>: <%= resp.choice %></p>
+          <% end %>
+        </div>
+      </div>
+
+
+
+
+    </div>
+
+
+
+
+
+  </div>
+
+  <div class="row">
+
+    <div class="col">
+      <!-- Some of this code attributed to Nat Tuck Lecture 13 Code-->
+      <h3> Add Comment </h3>
+      <%= if have_current_user?(@conn) do %>
+      <%= render(
       EventsWeb.CommentView,
       "form.html",
       changeset: @new_comment,
       action: Routes.comment_path(@conn, :create)
-    ) %>
-  <% end %>
-</div>
+      ) %>
+      <% end %>
 
-<%= for comm <- @post.comments do %>
-  <div class="card">
-    <div class="card-body">
-      <p>Posted by <%= comm.user.name %></p>
-      <% src = Routes.user_path(@conn, :photo, comm.user) %>
-      <img src="<%= src %>" alt="" width="50" height="50">
-      <p class="card-text"> <%= comm.body %> </p>
+
+      <%= for comm <- @post.comments do %>
+      <div class="card">
+        <div class="card-body">
+          <p>Posted by <%= comm.user.name %></p>
+          <% src = Routes.user_path(@conn, :photo, comm.user) %>
+          <img src="<%= src %>" alt="" width="50" height="50">
+          <p class="card-text"> <%= comm.body %> </p>
+          <span><%= link "Show", to: Routes.comment_path(@conn, :show, comm) %></span>
+          <%= if current_user_is_owner?(@conn, comm.user_id) || current_user_is_owner?(@conn, @post.user_id) do %>
+          <span><%= link "Delete", to: Routes.comment_path(@conn, :delete, comm), method: :delete, data: [confirm: "Are you sure?"] %></span>
+          <% end %>
+        </div>
+      </div>
+      <% end %>
     </div>
+
+
   </div>
-<% end %>
+
+
+
+
+
+
+
+
+</div>
